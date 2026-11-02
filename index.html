@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="اختبار مجاني لتحديد مستواك في اللغة الإنكليزية من A1 إلى C2">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>سُلّم الإنكليزية</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+  /* Layout: one narrow column; a six-rung CEFR ladder is the recurring motif (intro, progress, result). */
+  :root {
+    --bg: #eef2f6;
+    --surface: #ffffff;
+    --ink: #13213a;
+    --muted: #5b6a82;
+    --line: #d5dde8;
+    --accent: #1f5fd1;
+    --accent-ink: #ffffff;
+    --accent-soft: #e2ebfb;
+    --good: #18794e;
+    --good-soft: #def3e8;
+    --bad: #b4232c;
+    --bad-soft: #fbe3e4;
+    --font-display: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+    --font-body: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+    --font-en: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --r: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1422; --surface: #151f33; --ink: #e6ecf6; --muted: #98a6bd; --line: #2a3752;
+      --accent: #6f9cf5; --accent-ink: #0b1220; --accent-soft: #1d2c4c;
+      --good: #4cc38a; --good-soft: #13302a; --bad: #f2777e; --bad-soft: #3a1c22;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1422; --surface: #151f33; --ink: #e6ecf6; --muted: #98a6bd; --line: #2a3752;
+    --accent: #6f9cf5; --accent-ink: #0b1220; --accent-soft: #1d2c4c;
+    --good: #4cc38a; --good-soft: #13302a; --bad: #f2777e; --bad-soft: #3a1c22;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: 16px; line-height: 1.7;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 56px;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+  h1, h2 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.3; }
+  h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+  h2 { font-size: 1.3rem; }
+  p { margin: 0; }
+  .muted { color: var(--muted); }
+  .eyebrow { font-size: .8rem; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  [dir="ltr"] { font-family: var(--font-en); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* Ladder */
+  .ladder { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; align-items: end; direction: ltr; }
+  .rung { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .rung .bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--accent-soft); border: 1px solid var(--line); border-bottom: none; position: relative; overflow: hidden; }
+  .rung .fill { position: absolute; inset: auto 0 0 0; background: var(--accent); transition: height .5s ease; }
+  .rung .code { font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
+  .rung .sub { font-size: .72rem; color: var(--muted); font-family: var(--font-body); direction: rtl; text-align: center; line-height: 1.3; }
+  .rung.reached .bar { background: var(--accent); border-color: var(--accent); }
+  .rung.current .code { color: var(--accent); }
+
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .fact { display: flex; flex-direction: column; gap: 2px; }
+  .fact b { font-family: var(--font-display); font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+  .fact span { font-size: .85rem; color: var(--muted); }
+
+  button { font: inherit; cursor: pointer; }
+  .btn { border: 1px solid transparent; border-radius: 8px; padding: 12px 22px; font-weight: 600; background: var(--accent); color: var(--accent-ink); }
+  .btn:hover { filter: brightness(1.07); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.ghost:hover { background: var(--accent-soft); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+  /* Quiz */
+  .progress { display: flex; flex-direction: column; gap: 8px; }
+  .progress-top { display: flex; justify-content: space-between; font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .track { height: 6px; background: var(--accent-soft); border-radius: 3px; overflow: hidden; }
+  .track > div { height: 100%; background: var(--accent); width: 0; transition: width .3s ease; }
+  .stem { font-family: var(--font-en); font-size: clamp(1.25rem, 3.6vw, 1.55rem); line-height: 1.5; text-align: left; }
+  .stem .gap { display: inline-block; min-width: 3.5em; border-bottom: 2px solid var(--accent); }
+  .hint { font-size: .9rem; color: var(--muted); }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; direction: ltr; }
+  .opt { text-align: left; padding: 14px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--font-en); font-size: 1.08rem; display: flex; gap: 10px; align-items: baseline; }
+  .opt:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .opt .k { font-family: var(--font-display); font-size: .8rem; color: var(--muted); min-width: 1.2em; }
+  .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+  .quiz-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  /* Result */
+  .verdict { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .badge { font-family: var(--font-display); font-weight: 700; font-size: 3.4rem; line-height: 1; color: var(--accent-ink); background: var(--accent); border-radius: 12px; padding: 18px 22px; direction: ltr; }
+  .verdict-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .breakdown { display: flex; flex-direction: column; gap: 10px; }
+  .brow { display: grid; grid-template-columns: 2.6em 1fr 3.4em; gap: 12px; align-items: center; font-variant-numeric: tabular-nums; }
+  .brow .lv { font-family: var(--font-display); font-weight: 700; direction: ltr; }
+  .brow .t { height: 10px; background: var(--accent-soft); border-radius: 5px; overflow: hidden; }
+  .brow .t > div { height: 100%; border-radius: 5px; }
+  .brow .n { text-align: left; direction: ltr; color: var(--muted); font-size: .9rem; }
+  .review { display: flex; flex-direction: column; gap: 10px; }
+  .ritem { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .ritem .q { font-family: var(--font-en); direction: ltr; text-align: left; }
+  .ritem .a { direction: ltr; text-align: left; font-size: .95rem; display: flex; gap: 14px; flex-wrap: wrap; }
+  .tag { font-size: .75rem; border-radius: 999px; padding: 1px 8px; font-family: var(--font-display); }
+  .yours { color: var(--bad); }
+  .right { color: var(--good); }
+  details summary { cursor: pointer; font-weight: 600; }
+  .note { font-size: .85rem; color: var(--muted); }
+
+  @media (max-width: 520px) {
+    .options { grid-template-columns: 1fr; }
+    .panel { padding: 18px; }
+    .facts { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .badge { font-size: 2.6rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap" dir="rtl" lang="ar">
+  <!-- INTRO -->
+  <section id="intro" class="wrap" style="gap:24px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <span class="eyebrow">اختبار تحديد المستوى · CEFR</span>
+      <h1>ما هو مستواك في اللغة الإنكليزية؟</h1>
+      <p class="muted">48 سؤالًا في القواعد والمفردات، تبدأ سهلة وتصعب تدريجيًا من A1 إلى C2. في النهاية تحصل على مستواك التقريبي وتفصيل نتيجتك في كل مستوى ومراجعة لأخطائك.</p>
+    </div>
+
+    <div class="panel">
+      <div class="ladder" id="introLadder" aria-label="مستويات الإطار الأوروبي"></div>
+      <div class="facts">
+        <div class="fact"><b>48</b><span>سؤال</span></div>
+        <div class="fact"><b>15–20</b><span>دقيقة تقريبًا</span></div>
+        <div class="fact"><b>6</b><span>مستويات</span></div>
+      </div>
+      <p class="note">نصيحة: إذا لم تعرف الجواب اضغط «لا أعرف» بدل التخمين، فالنتيجة تصبح أدق.</p>
+      <div class="row">
+        <button class="btn" id="startBtn" type="button">ابدأ الاختبار</button>
+        <button class="btn ghost" id="resumeBtn" type="button" hidden>أكمل من حيث توقفت</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" hidden>
+    <div class="wrap">
+      <div class="progress">
+        <div class="progress-top"><span id="qCount">السؤال 1 من 48</span><span id="qPct">0%</span></div>
+        <div class="track"><div id="qBar"></div></div>
+      </div>
+      <div class="panel">
+        <span class="hint">اختر الكلمة أو العبارة المناسبة للفراغ</span>
+        <p class="stem" dir="ltr" id="stem"></p>
+        <div class="options" id="options"></div>
+        <div class="quiz-foot">
+          <button class="btn ghost" id="backBtn" type="button">السابق</button>
+          <div class="row">
+            <button class="btn ghost" id="dontKnowBtn" type="button">لا أعرف</button>
+            <button class="btn" id="nextBtn" type="button" disabled>التالي</button>
+          </div>
+        </div>
+      </div>
+      <p class="note">يمكنك أيضًا استخدام لوحة المفاتيح: الأرقام 1–4 للاختيار و Enter للتالي.</p>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" hidden>
+    <div class="wrap">
+      <div class="panel">
+        <span class="eyebrow">نتيجتك</span>
+        <div class="verdict">
+          <div class="badge" id="rBadge">B1</div>
+          <div class="verdict-text">
+            <h2 id="rTitle"></h2>
+            <p class="muted" id="rDesc"></p>
+            <p class="note" id="rScore"></p>
+          </div>
+        </div>
+        <div class="ladder" id="resultLadder"></div>
+      </div>
+
+      <div class="panel">
+        <h2>النتيجة في كل مستوى</h2>
+        <div class="breakdown" id="breakdown"></div>
+        <p class="note">يُعتبر المستوى مُجتازًا عند الإجابة الصحيحة على 5 أسئلة من 8 على الأقل، بشرط اجتياز المستويات التي قبله.</p>
+      </div>
+
+      <div class="panel">
+        <details id="reviewWrap">
+          <summary>مراجعة الأخطاء (<span id="wrongCount">0</span>)</summary>
+          <div class="review" id="review" style="margin-top:12px"></div>
+        </details>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="restartBtn" type="button">أعد الاختبار</button>
+      </div>
+      <p class="note">هذا اختبار تقريبي للقواعد والمفردات فقط، ولا يقيس الاستماع والمحادثة والكتابة. للحصول على شهادة رسمية استخدم اختبارات مثل IELTS أو Cambridge.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
+  const LEVEL_INFO = {
+    "Pre-A1": ["مبتدئ تمامًا", "ما زلت في بداية الطريق. ركّز على الكلمات الأساسية وأفعال to be و have والجمل البسيطة."],
+    A1: ["مبتدئ", "تفهم وتستخدم عبارات يومية بسيطة جدًا، وتستطيع تقديم نفسك والسؤال عن معلومات شخصية أساسية."],
+    A2: ["ما قبل المتوسط", "تفهم جملًا شائعة عن مواضيع مألوفة كالعائلة والتسوق والعمل، وتتواصل في مواقف بسيطة وروتينية."],
+    B1: ["متوسط", "تتعامل مع أغلب المواقف أثناء السفر، وتصف تجاربك وأحداثًا وتشرح آراءك وخططك باختصار."],
+    B2: ["فوق المتوسط", "تتحدث بطلاقة وعفوية مع متحدثين أصليين، وتفهم الأفكار الرئيسية في نصوص معقدة."],
+    C1: ["متقدم", "تستخدم اللغة بمرونة وفعالية في الحياة الاجتماعية والأكاديمية والمهنية، وتفهم معاني ضمنية."],
+    C2: ["إتقان", "تفهم تقريبًا كل ما تسمعه أو تقرؤه، وتعبّر عن نفسك بدقة عالية وتميّز الفروق الدقيقة في المعنى."]
+  };
+  const SUB = { A1: "مبتدئ", A2: "أساسي", B1: "متوسط", B2: "فوق المتوسط", C1: "متقدم", C2: "إتقان" };
+
+  // Each item: [level, sentence with ___, correct, [distractors...]]
+  const BANK = [
+    ["A1", "My name ___ Sara.", "is", ["am", "are", "be"]],
+    ["A1", "They ___ from Iraq.", "are", ["is", "am", "be"]],
+    ["A1", "I have two ___.", "sisters", ["sister", "sisteres", "sister's"]],
+    ["A1", "___ you like tea?", "Do", ["Does", "Are", "Is"]],
+    ["A1", "She ___ coffee every morning.", "drinks", ["drink", "drinking", "is drink"]],
+    ["A1", "There ___ a book on the table.", "is", ["are", "be", "have"]],
+    ["A1", "It's seven ___. Time for breakfast!", "o'clock", ["hours", "time", "clock"]],
+    ["A1", "This box isn't big. It's ___.", "small", ["tall", "long", "heavy"]],
+
+    ["A2", "I ___ to the cinema last night.", "went", ["go", "gone", "have gone"]],
+    ["A2", "She is ___ than her brother.", "taller", ["more tall", "tallest", "the tallest"]],
+    ["A2", "We ___ dinner when the phone rang.", "were having", ["had have", "are having", "have"]],
+    ["A2", "Have you ever ___ to London?", "been", ["went", "go", "be"]],
+    ["A2", "I'm going ___ my grandparents this weekend.", "to visit", ["visit", "visited", "for visit"]],
+    ["A2", "You ___ wear a seatbelt in the car. It's the law.", "must", ["can", "might", "don't have to"]],
+    ["A2", "How ___ money do you have?", "much", ["many", "lot", "few"]],
+    ["A2", "I need to ___ an appointment with the dentist.", "make", ["do", "take", "have"]],
+
+    ["B1", "If it rains tomorrow, we ___ at home.", "will stay", ["would stay", "stayed", "stay will"]],
+    ["B1", "I've lived here ___ 2015.", "since", ["for", "from", "during"]],
+    ["B1", "This book ___ by millions of people.", "has been read", ["has read", "is reading", "have been read"]],
+    ["B1", "She asked me where I ___.", "lived", ["do live", "did live", "am living"]],
+    ["B1", "I'm not used to ___ up so early.", "getting", ["get", "got", "be getting"]],
+    ["B1", "He ___ smoking last year and feels much better now.", "gave up", ["gave in", "gave out", "gave away"]],
+    ["B1", "This is the man ___ car was stolen.", "whose", ["who", "which", "whom"]],
+    ["B1", "It's cold outside. You'd better ___ a jacket.", "take", ["to take", "taking", "took"]],
+
+    ["B2", "If I had known, I ___ you.", "would have told", ["would tell", "will have told", "had told"]],
+    ["B2", "By the time we arrived, the film ___.", "had already started", ["already started", "has already started", "was already starting"]],
+    ["B2", "I wish I ___ more time to travel.", "had", ["have", "will have", "would had"]],
+    ["B2", "She denied ___ the money.", "taking", ["to take", "take", "to have take"]],
+    ["B2", "The meeting has been ___ until next week.", "put off", ["put out", "put up", "put away"]],
+    ["B2", "You ___ have seen him yesterday. He's been in Japan all month.", "can't", ["mustn't", "shouldn't", "needn't"]],
+    ["B2", "Despite ___ tired, she finished the race.", "being", ["she was", "of being", "be"]],
+    ["B2", "I'd rather you ___ smoke in here.", "didn't", ["won't", "not", "wouldn't to"]],
+
+    ["C1", "Hardly ___ the house when it started to rain.", "had we left", ["we had left", "did we leave", "we left"]],
+    ["C1", "It's high time we ___ a decision.", "made", ["make", "will make", "are making"]],
+    ["C1", "Not only ___ late, but he also forgot the tickets.", "was he", ["he was", "he is", "did he be"]],
+    ["C1", "The proposal was met with ___ criticism from the press.", "scathing", ["scorching", "boiling", "burning"]],
+    ["C1", "Scarcely had she sat down ___ the phone rang.", "when", ["than", "then", "that"]],
+    ["C1", "With her talent and hard work, she is ___ to succeed.", "bound", ["due", "liable", "prone"]],
+    ["C1", "The new regulations will ___ affect small businesses.", "adversely", ["adverse", "adversary", "averse"]],
+    ["C1", "He took the criticism ___ his stride and carried on.", "in", ["on", "at", "with"]],
+
+    ["C2", "The minister's answer was so ___ that nobody could tell what he actually meant.", "equivocal", ["eloquent", "explicit", "emphatic"]],
+    ["C2", "Little ___ that his life was about to change forever.", "did he know", ["he knew", "he did know", "knew he"]],
+    ["C2", "The two approaches are not mutually ___; we can use both.", "exclusive", ["excluded", "exclusionary", "excluding"]],
+    ["C2", "She was ___ to the idea at first, but eventually came round to it.", "averse", ["adverse", "diverse", "reverse"]],
+    ["C2", "His argument simply doesn't hold ___ under close scrutiny.", "water", ["fire", "ground", "weight"]],
+    ["C2", "After years of losses, the firm is on the ___ of bankruptcy.", "verge", ["rim", "border", "margin"]],
+    ["C2", "Were the government ___ taxes again, there would be mass protests.", "to raise", ["raising", "raise", "raised"]],
+    ["C2", "It was a ___ victory: they won the battle but lost most of their army.", "Pyrrhic", ["Herculean", "Spartan", "Draconian"]]
+  ];
+
+  const PASS = 5;            // out of 8 per level
+  const STORE = "cefr-test-v1";
+  const $ = (id) => document.getElementById(id);
+
+  let state = null; // { order:[{i, opts:[...]}], answers:[string|null|"__idk"], pos }
+
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+  function load() { try { const s = JSON.parse(localStorage.getItem(STORE)); return s && s.order && s.order.length === BANK.length ? s : null; } catch (e) { return null; } }
+  function clear() { try { localStorage.removeItem(STORE); } catch (e) {} }
+
+  function show(id) { ["intro", "quiz", "result"].forEach((s) => ($(s).hidden = s !== id)); window.scrollTo(0, 0); }
+
+  function ladder(el, levelReached, perLevel) {
+    el.innerHTML = "";
+    LEVELS.forEach((lv, idx) => {
+      const h = 28 + idx * 14;
+      const r = document.createElement("div");
+      r.className = "rung";
+      const reachedIdx = LEVELS.indexOf(levelReached);
+      if (perLevel && idx <= reachedIdx) r.classList.add("reached");
+      if (perLevel && idx === reachedIdx) r.classList.add("current");
+      r.innerHTML = '<div class="bar" style="height:' + h + 'px"></div><span class="code">' + lv + '</span><span class="sub">' + SUB[lv] + "</span>";
+      el.appendChild(r);
+    });
+  }
+
+  function newTest() {
+    // keep level order (easy → hard), shuffle questions within each level and options in each question
+    const order = [];
+    LEVELS.forEach((lv) => {
+      const idxs = BANK.map((q, i) => (q[0] === lv ? i : -1)).filter((i) => i >= 0);
+      shuffle(idxs).forEach((i) => order.push({ i, opts: shuffle([BANK[i][2]].concat(BANK[i][3])) }));
+    });
+    state = { order, answers: new Array(BANK.length).fill(null), pos: 0, done: false };
+    save();
+  }
+
+  function renderQ() {
+    const { order, answers, pos } = state;
+    const item = order[pos];
+    const q = BANK[item.i];
+    const total = order.length;
+    $("qCount").textContent = "السؤال " + (pos + 1) + " من " + total;
+    const pct = Math.round((pos / total) * 100);
+    $("qPct").textContent = pct + "%";
+    $("qBar").style.width = pct + "%";
+
+    const parts = q[1].split("___");
+    const stem = $("stem");
+    stem.textContent = "";
+    stem.append(parts[0]);
+    const gap = document.createElement("span"); gap.className = "gap";
+    const cur = answers[pos];
+    gap.textContent = cur && cur !== "__idk" ? cur : " ";
+    stem.append(gap, parts[1] || "");
+
+    const box = $("options");
+    box.innerHTML = "";
+    item.opts.forEach((o, k) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "opt"; b.id = "opt-" + k;
+      b.setAttribute("aria-pressed", String(cur === o));
+      b.innerHTML = '<span class="k">' + (k + 1) + "</span>";
+      b.append(o);
+      b.addEventListener("click", () => choose(o));
+      box.appendChild(b);
+    });
+    $("backBtn").disabled = pos === 0;
+    $("nextBtn").disabled = cur == null;
+    $("nextBtn").textContent = pos === total - 1 ? "اعرض النتيجة" : "التالي";
+    $("dontKnowBtn").setAttribute("aria-pressed", String(cur === "__idk"));
+  }
+
+  function choose(o) {
+    state.answers[state.pos] = o;
+    save();
+    renderQ();
+  }
+  function next() {
+    if (state.answers[state.pos] == null) return;
+    if (state.pos < state.order.length - 1) { state.pos++; save(); renderQ(); }
+    else finish();
+  }
+
+  function compute() {
+    const per = {}; LEVELS.forEach((l) => (per[l] = { right: 0, total: 0 }));
+    const wrong = [];
+    state.order.forEach((item, p) => {
+      const q = BANK[item.i];
+      const a = state.answers[p];
+      per[q[0]].total++;
+      if (a === q[2]) per[q[0]].right++;
+      else wrong.push({ q, a });
+    });
+    let level = "Pre-A1";
+    for (const l of LEVELS) { if (per[l].right >= PASS) level = l; else break; }
+    const totalRight = LEVELS.reduce((s, l) => s + per[l].right, 0);
+    return { per, level, wrong, totalRight };
+  }
+
+  function finish() {
+    state.done = true; save();
+    const { per, level, wrong, totalRight } = compute();
+    const info = LEVEL_INFO[level];
+    $("rBadge").textContent = level === "Pre-A1" ? "A0" : level;
+    $("rTitle").textContent = "مستواك التقريبي: " + (level === "Pre-A1" ? "دون A1" : level) + " · " + info[0];
+    $("rDesc").textContent = info[1];
+    $("rScore").textContent = "الإجابات الصحيحة: " + totalRight + " من " + BANK.length;
+    ladder($("resultLadder"), level === "Pre-A1" ? null : level, true);
+
+    const bd = $("breakdown"); bd.innerHTML = "";
+    LEVELS.forEach((l) => {
+      const r = per[l].right, t = per[l].total, ok = r >= PASS;
+      const row = document.createElement("div"); row.className = "brow";
+      row.innerHTML = '<span class="lv">' + l + '</span><div class="t"><div style="width:' + (r / t) * 100 + "%;background:var(" + (ok ? "--good" : "--bad") + ')"></div></div><span class="n">' + r + " / " + t + "</span>";
+      bd.appendChild(row);
+    });
+
+    $("wrongCount").textContent = wrong.length;
+    const rv = $("review"); rv.innerHTML = "";
+    if (!wrong.length) rv.innerHTML = '<p class="muted">لا توجد أخطاء. ممتاز!</p>';
+    wrong.forEach(({ q, a }) => {
+      const d = document.createElement("div"); d.className = "ritem";
+      const qq = document.createElement("div"); qq.className = "q";
+      const tag = document.createElement("span"); tag.className = "tag"; tag.style.background = "var(--accent-soft)"; tag.textContent = q[0];
+      qq.append(tag, " " + q[1]);
+      const aa = document.createElement("div"); aa.className = "a";
+      const y = document.createElement("span"); y.className = "yours"; y.textContent = "✗ " + (a === "__idk" || a == null ? "(I don't know)" : a);
+      const c = document.createElement("span"); c.className = "right"; c.textContent = "✓ " + q[2];
+      aa.append(y, c);
+      d.append(qq, aa); rv.appendChild(d);
+    });
+    show("result");
+  }
+
+  // Wiring
+  $("startBtn").addEventListener("click", () => { newTest(); show("quiz"); renderQ(); });
+  $("resumeBtn").addEventListener("click", () => { if (state.done) finish(); else { show("quiz"); renderQ(); } });
+  $("nextBtn").addEventListener("click", next);
+  $("backBtn").addEventListener("click", () => { if (state.pos > 0) { state.pos--; save(); renderQ(); } });
+  $("dontKnowBtn").addEventListener("click", () => { state.answers[state.pos] = "__idk"; save(); next(); });
+  $("restartBtn").addEventListener("click", () => { clear(); newTest(); show("quiz"); renderQ(); });
+  document.addEventListener("keydown", (e) => {
+    if ($("quiz").hidden) return;
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 4) { const o = state.order[state.pos].opts[n - 1]; if (o) choose(o); }
+    else if (e.key === "Enter" && !(document.activeElement instanceof HTMLButtonElement)) next();
+  });
+
+  ladder($("introLadder"), null, false);
+  const saved = load();
+  if (saved) {
+    state = saved;
+    $("resumeBtn").hidden = false;
+    $("resumeBtn").textContent = saved.done ? "اعرض نتيجتي السابقة" : "أكمل من حيث توقفت (السؤال " + (saved.pos + 1) + ")";
+  }
+})();
+</script>
+</body>
+</html>
